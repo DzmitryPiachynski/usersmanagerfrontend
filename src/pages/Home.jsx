@@ -8,7 +8,6 @@ function Home() {
     const [users, setUsers] = useState([])
     useEffect(() => {
         loadUsers()
-        console.log(users);
     },[])
 
     const loadUsers = async () => {
@@ -25,7 +24,7 @@ function Home() {
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Last Name</th>
-                        <th scope="col">Age</th>
+                        <th scope="col">Date of Birth</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
@@ -36,11 +35,8 @@ function Home() {
                                 <th scope="row">{index + 1}</th>
                                 <td>{user.firstname}</td>
                                 <td>{user.lastname}</td>
-                                <td>{user.age}</td>
+                                <td>{user.birthday}</td>
                                 <td>
-                                    <button className="btn btn-outline-info mx-2">
-                                        View
-                                    </button>
                                     <button className="btn btn-primary mx-2">
                                         Edit
                                     </button>

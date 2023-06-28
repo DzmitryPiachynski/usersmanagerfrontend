@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Button from "react-bootstrap/Button";
+import 'react-datepicker/dist/react-datepicker.css'
 
 function NavBar() {
 
@@ -10,10 +11,10 @@ function NavBar() {
     const [user, setUser] = useState({
         firstname: "",
         lastname: "",
-        age: 0
+        birthday: "",
     })
 
-    const { firstname, lastname, age } = user
+    const { firstname, lastname, birthday } = user
 
     const onInputChange = e => {
         setUser({
@@ -23,9 +24,13 @@ function NavBar() {
 
     const onSubmit = async e => {
         e.preventDefault()
-        console.log(user);
         await axios.post("http://localhost:8080/users", [user])
-        navigate("/")
+            .then(() => navigate("/"))
+            .catch(err => {
+                console.warn(err)
+                alert('Cant get collections')
+            })
+
     }
 
     return (
@@ -35,7 +40,7 @@ function NavBar() {
                     <h2 className="text-center m-4">Register new user</h2>
                     <form onSubmit={event => onSubmit(event)}>
                         <div className="mb-3">
-                            <label ntmlfor="Name" className="form-label">First Name</label>
+                            <label ntmlfor="Firstname" className="form-label">First Name</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -46,7 +51,7 @@ function NavBar() {
                             />
                         </div>
                         <div className="mb-3">
-                            <label ntmlfor="Name" className="form-label">Last Name</label>
+                            <label ntmlfor="Lastname" className="form-label">Last Name</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -57,13 +62,12 @@ function NavBar() {
                             />
                         </div>
                         <div className="mb-3">
-                            <label ntmlfor="Name" className="form-label">Full Age</label>
+                            <label ntmlfor="Birthday" className="form-label">Date of Birth</label>
                             <input
-                                type="number"
+                                type="date"
                                 className="form-control"
-                                placeholder="Enter your age ..."
-                                name="age"
-                                value={age}
+                                name="birthday"
+                                value={birthday}
                                 onChange={event => onInputChange(event)}
                             />
                         </div>
