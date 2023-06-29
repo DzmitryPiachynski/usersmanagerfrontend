@@ -1,12 +1,14 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import 'react-datepicker/dist/react-datepicker.css'
 
-function NavBar() {
+function EditUser() {
 
     let navigate = useNavigate()
+
+    const {id} = useParams()
 
     const [user, setUser] = useState({
         firstname: "",
@@ -14,34 +16,39 @@ function NavBar() {
         birthday: "",
     })
 
-    const validate = () => {
-        return user.firstname.length & user.lastname.length & user.birthday.length;
-      };
-
     const { firstname, lastname, birthday } = user
 
+
+    useEffect(() =>{
+        loadUser();
+    }, [])
     const onInputChange = e => {
         setUser({
             ...user, [e.target.name]: e.target.value
         })
     }
 
+
     const onSubmit = async e => {
         e.preventDefault()
-        await axios.post("http://localhost:8080/users", user)
+        await axios.put(`http://localhost:8080/users/${id}`, user)
             .then(() => navigate("/"))
             .catch(err => {
                 console.warn(err)
                 alert('Cant get collections')
             })
+    }
 
+    const loadUser = async () => {
+        const result = await axios.get(`http://localhost:8080/users/${id}`)
+        setUser(result.data)
     }
 
     return (
         <div className="container">
             <div className="row">
                 <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-                    <h2 className="text-center m-4">Register new user</h2>
+                    <h2 className="text-center m-4">Edit User</h2>
                     <form onSubmit={event => onSubmit(event)}>
                         <div className="mb-3">
                             <label ntmlfor="Firstname" className="form-label">First Name</label>
@@ -75,7 +82,7 @@ function NavBar() {
                                 onChange={event => onInputChange(event)}
                             />
                         </div>
-                        <button disabled={!validate()} type="submit" className="btn btn-outline-primary">Submit</button>
+                        <button type="submit" className="btn btn-outline-primary">Submit</button>
                         <Button variant="outline-danger mx-2" href="/">Go back</Button>
                     </form>
                 </div>
@@ -84,4 +91,4 @@ function NavBar() {
     );
 }
 
-export default NavBar;
+export default EditUser;

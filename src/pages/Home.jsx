@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from 'react-bootstrap/Table';
 import React, {useEffect, useState} from "react"
 import axios from "axios"
+import { Link, useParams } from 'react-router-dom';
 
 function Home() {
 
@@ -10,8 +11,15 @@ function Home() {
         loadUsers()
     },[])
 
+    const {id} = useParams();
+
     const loadUsers = async () => {
         const result = await axios.get("http://localhost:8080/users")
+        setUsers(result.data)
+    }
+
+    const deleteUser = async (id) =>{
+        const result = await axios.get(`http://localhost:8080/users/${id}`)
         setUsers(result.data)
     }
 
@@ -37,10 +45,13 @@ function Home() {
                                 <td>{user.lastname}</td>
                                 <td>{user.birthday}</td>
                                 <td>
-                                    <button className="btn btn-primary mx-2">
+                                    <Link className="btn btn-primary mx-2"
+                                          to={`/edituser/${user.id}`}  
+                                    >
                                         Edit
-                                    </button>
-                                    <button className="btn btn-danger mx-2">
+                                    </Link>
+                                    <button className="btn btn-danger mx-2"
+                                            onClick={() => deleteUser(user.id)}>
                                         Delete
                                     </button>
                                 </td>
