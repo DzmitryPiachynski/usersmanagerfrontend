@@ -15,7 +15,7 @@ function NavBar() {
     })
 
     const validate = () => {
-        return user.firstname.length & user.lastname.length & user.birthday.length;
+        return user.firstname.length && user.lastname.length && user.birthday.length;
       };
 
     const { firstname, lastname, birthday } = user
@@ -24,6 +24,7 @@ function NavBar() {
         setUser({
             ...user, [e.target.name]: e.target.value
         })
+        validate()
     }
 
     const onSubmit = async e => {
@@ -32,7 +33,7 @@ function NavBar() {
             .then(() => navigate("/"))
             .catch(err => {
                 console.warn(err)
-                alert('Cant get collections')
+                alert('Validation error')
             })
 
     }

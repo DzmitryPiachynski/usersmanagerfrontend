@@ -31,11 +31,11 @@ function EditUser() {
 
     const onSubmit = async e => {
         e.preventDefault()
-        await axios.put(`http://localhost:8080/users/${id}`, user)
+        await axios.patch(`http://localhost:8080/users/${id}`, user)
             .then(() => navigate("/"))
             .catch(err => {
                 console.warn(err)
-                alert('Cant get collections')
+                alert('Validation error')
             })
     }
 

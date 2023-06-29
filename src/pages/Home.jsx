@@ -6,7 +6,11 @@ import { Link, useParams } from 'react-router-dom';
 
 function Home() {
 
-    const [users, setUsers] = useState([])
+    const [users, setUsers] = useState([{
+        firstname: "",
+        lastname: "",
+        birthday: "",
+    }])
     useEffect(() => {
         loadUsers()
     },[])
@@ -19,8 +23,8 @@ function Home() {
     }
 
     const deleteUser = async (id) =>{
-        const result = await axios.get(`http://localhost:8080/users/${id}`)
-        setUsers(result.data)
+        const result = await axios.delete(`http://localhost:8080/users/${id}`)
+        loadUsers()
     }
 
     return (
@@ -46,7 +50,7 @@ function Home() {
                                 <td>{user.birthday}</td>
                                 <td>
                                     <Link className="btn btn-primary mx-2"
-                                          to={`/edituser/${user.id}`}  
+                                          to={`/edituser/${user.id}`}
                                     >
                                         Edit
                                     </Link>
